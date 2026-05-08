@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ensembles &amp; Programmes — José Huamaní</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0d1726;
+    --bg-2:#0a1320;
+    --paper:#f3ead6;
+    --paper-mute:rgba(243,234,214,.58);
+    --rule:rgba(243,234,214,.14);
+    --brass:#c79a3a;
+    --brass-2:#e6c073;
+    --auroras:#f0d769;
+    --rust:#c97247;
+    --brown:#8a6a3e;
+    --serif:"Cormorant Garamond",Georgia,serif;
+    --sans:"Manrope",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--paper);min-height:100%;}
+  body{font-family:var(--sans);font-size:15px;line-height:1.6;font-weight:300;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 48px;}
+  @media (max-width:720px){ .wrap{padding:0 22px;} }
+
+  /* sticky page header (combined nav + title) */
+  .nav{
+    padding:28px 0 24px;border-bottom:1px solid var(--rule);
+    position:sticky;top:0;z-index:30;
+    background:color-mix(in oklab,var(--bg) 94%,transparent);backdrop-filter:blur(10px);
+  }
+  .nav .row{display:flex;align-items:flex-end;justify-content:space-between;gap:48px;}
+  .nav .left{display:flex;flex-direction:column;gap:6px;min-width:0;}
+  .nav .eyebrow{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--paper-mute);font-weight:500;}
+  .nav h1{
+    font-family:var(--serif);font-weight:400;letter-spacing:-.005em;
+    font-size:clamp(34px,5vw,68px);line-height:.95;
+    white-space:nowrap;
+  }
+  .nav h1 em{font-style:italic;color:var(--brass-2);}
+  .nav h1 a{color:inherit;}
+  .nav ul{display:flex;gap:36px;list-style:none;font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:400;padding-bottom:14px;}
+  .nav ul a{color:var(--paper-mute);transition:color .25s;}
+  .nav ul a:hover, .nav ul a.active{color:var(--brass-2);}
+  @media (max-width:780px){
+    .nav .row{flex-direction:column;align-items:flex-start;gap:18px;}
+    .nav h1{white-space:normal;font-size:clamp(34px,9vw,56px);}
+    .nav ul{gap:22px;padding-bottom:0;}
+  }
+
+  /* section heading */
+  .row-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:32px;
+    padding:48px 0 32px;
+    border-top:1px solid var(--rule);
+    scroll-margin-top:180px;
+  }
+  .first-row-head{padding-top:64px;border-top:0;}
+  .row-head h2{font-family:var(--serif);font-size:clamp(32px,4vw,52px);font-weight:400;line-height:1;letter-spacing:-.005em;}
+  .row-head h2 em{font-style:italic;color:var(--brass-2);}
+  .row-head .num{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--paper-mute);font-weight:500;}
+  .row-head p{max-width:38ch;color:var(--paper-mute);font-size:14px;font-family:var(--serif);font-style:italic;font-size:18px;line-height:1.4;}
+
+  /* ── Row 1: Ensembles (text only, three columns) ────── */
+  .ensembles-row{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--rule);
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+    margin-bottom:80px;
+  }
+  @media (max-width:900px){ .ensembles-row{grid-template-columns:1fr;} }
+  .ens-card{
+    background:var(--bg);
+    padding:48px 36px;
+    display:flex;flex-direction:column;gap:20px;
+    min-height:380px;
+    position:relative;
+  }
+  .ens-card::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--brass-2);
+    opacity:.7;
+  }
+  .ens-card[data-key="auroras"]::before{background:var(--auroras);}
+  .ens-card[data-key="transat"]::before{background:var(--brown);}
+  .ens-card[data-key="colibri"]::before{background:var(--rust);}
+  .ens-card .index{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--paper-mute);font-weight:500;}
+  .ens-card h3{font-family:var(--serif);font-size:34px;font-weight:400;line-height:1.05;letter-spacing:-.005em;}
+  .ens-card h3 em{font-style:italic;color:var(--brass-2);}
+  .ens-card[data-key="auroras"] h3 em{color:var(--auroras);}
+  .ens-card[data-key="colibri"] h3 em{color:var(--rust);}
+  .ens-card[data-key="transat"] h3 em{color:var(--brown);}
+  .ens-card .role-line{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--paper-mute);font-weight:500;}
+  .ens-card p{font-size:14px;line-height:1.7;color:var(--paper-mute);}
+  .ens-card .meta{
+    margin-top:auto;padding-top:18px;border-top:1px solid var(--rule);
+    display:flex;flex-wrap:wrap;gap:6px 18px;
+    font-family:var(--serif);font-style:italic;font-size:16px;color:var(--paper);
+  }
+  .ens-card .meta span{position:relative;}
+  .ens-card .meta span:not(:last-child)::after{content:"·";position:absolute;right:-12px;color:var(--paper-mute);}
+
+  /* ── Row 2: Programmes (tabs + image/text panel) ────── */
+  .progs{margin-top:0;}
+  .progs-tabs{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--rule);
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+  }
+  @media (max-width:720px){ .progs-tabs{grid-template-columns:1fr;} }
+  .ptab{
+    background:var(--bg);
+    padding:22px 26px;
+    cursor:pointer;
+    border:none;color:var(--paper);text-align:left;
+    transition:background .25s;
+    display:flex;flex-direction:column;gap:8px;
+    position:relative;
+    font-family:var(--sans);
+  }
+  .ptab:hover{background:var(--bg-2);}
+  .ptab[aria-selected="true"]{background:var(--bg-2);}
+  .ptab[aria-selected="true"]::after{
+    content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--brass-2);
+  }
+  .ptab[data-key="love"][aria-selected="true"]::after{background:var(--auroras);}
+  .ptab[data-key="america"][aria-selected="true"]::after{background:var(--brass-2);}
+  .ptab[data-key="echoes"][aria-selected="true"]::after{background:var(--rust);}
+  .ptab .num{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--paper-mute);font-weight:500;}
+  .ptab .ttl{font-family:var(--serif);font-style:italic;font-size:24px;font-weight:500;line-height:1.1;}
+  .ptab .who{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper-mute);font-weight:500;}
+
+  /* fade transition between programmes */
+  .ppanel{
+    position:absolute;inset:0;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .55s ease, visibility 0s linear .55s;
+  }
+  .ppanel.is-active{
+    position:relative;
+    opacity:1;visibility:visible;pointer-events:auto;
+    transition:opacity .55s ease, visibility 0s linear 0s;
+  }
+  .ppanels-stage{position:relative;}
+  .ppanel-grid{
+    display:grid;grid-template-columns:1fr 1.1fr;
+    min-height:560px;
+  }
+  @media (max-width:1000px){ .ppanel-grid{grid-template-columns:1fr;} }
+  .ppanel-image{position:relative;background:#000;overflow:hidden;aspect-ratio:4/5;}
+  @media (max-width:1000px){ .ppanel-image{aspect-ratio:16/10;} }
+  .ppanel-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .ppanel-image .badge{
+    position:absolute;top:24px;left:24px;
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;
+    background:var(--bg);color:var(--paper);padding:8px 12px;
+  }
+  .ppanel-image::after{content:"";position:absolute;inset:0;background:linear-gradient(20deg,rgba(13,23,38,.4) 0%,transparent 55%);pointer-events:none;}
+  .ppanel-text{padding:56px 56px;display:flex;flex-direction:column;gap:24px;}
+  @media (max-width:1000px){ .ppanel-text{padding:48px 0 8px;} }
+  @media (max-width:720px){ .ppanel-text{padding:40px 0 8px;} }
+  .ppanel-text .who-line{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass-2);font-weight:500;}
+  .ppanel[data-key="love"] .ppanel-text .who-line{color:var(--auroras);}
+  .ppanel[data-key="echoes"] .ppanel-text .who-line{color:var(--rust);}
+  .ppanel-text h3{font-family:var(--serif);font-size:clamp(36px,4.6vw,56px);line-height:1;font-weight:400;letter-spacing:-.005em;}
+  .ppanel-text h3 .sub{display:block;font-style:italic;font-weight:400;font-size:.45em;color:var(--paper-mute);margin-top:10px;letter-spacing:0;}
+  .ppanel-text p{font-size:15px;line-height:1.75;max-width:54ch;color:var(--paper);}
+  .ppanel-text p.mute{color:var(--paper-mute);}
+  .ppanel-text .epigraph{
+    border-left:2px solid var(--brass);padding:6px 0 6px 22px;
+    font-family:var(--serif);font-style:italic;font-size:18px;line-height:1.5;color:var(--paper-mute);max-width:46ch;
+  }
+  .ppanel[data-key="love"] .ppanel-text .epigraph{border-left-color:var(--auroras);}
+  .ppanel[data-key="echoes"] .ppanel-text .epigraph{border-left-color:var(--rust);}
+  .ppanel-text .pieces{
+    list-style:none;border-top:1px solid var(--rule);
+    margin-top:8px;
+  }
+  .ppanel-text .pieces li{
+    display:grid;grid-template-columns:1fr auto;gap:24px;
+    padding:12px 0;border-bottom:1px solid var(--rule);align-items:baseline;
+  }
+  .ppanel-text .pieces li .piece{font-family:var(--serif);font-style:italic;font-size:18px;font-weight:500;}
+  .ppanel-text .pieces li .composer{font-size:11.5px;letter-spacing:.08em;color:var(--paper-mute);text-align:right;}
+  .ppanel-text .specs{
+    display:flex;flex-wrap:wrap;gap:8px 24px;
+    padding-top:18px;border-top:1px solid var(--rule);
+    font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper-mute);font-weight:500;
+  }
+  .ppanel-text .specs b{color:var(--paper);font-weight:500;}
+  .ppanel-text .specs .budget{color:var(--brass-2);font-weight:600;letter-spacing:.18em;}
+  .ppanel-text .specs .budget b{color:var(--brass-2);font-weight:500;}
+
+  /* pager */
+  .pager{
+    padding:64px 0 80px;
+    display:flex;justify-content:space-between;gap:24px;
+    border-top:1px solid var(--rule);margin-top:80px;
+    font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper-mute);font-weight:500;
+  }
+  @media (max-width:720px){ .pager{flex-direction:column;} }
+  .pager a{display:inline-flex;align-items:center;gap:14px;color:var(--brass-2);transition:color .2s;}
+  .pager a:hover{color:var(--paper);}
+  .pager svg{width:36px;height:12px;}
+
+  /* language switcher */
+  .lang-switch{position:relative;}
+  .lang-switch button[data-lang-toggle]{background:none;border:0;color:var(--paper-mute);font:inherit;cursor:pointer;font-size:12px;letter-spacing:.22em;text-transform:uppercase;padding:0;transition:color .25s;}
+  .lang-switch button[data-lang-toggle]:hover{color:var(--brass-2);}
+  .lang-switch [data-lang-menu]{position:absolute;top:calc(100% + 14px);right:0;display:none;flex-direction:column;min-width:160px;background:var(--bg-2);border:1px solid var(--rule);padding:6px 0;z-index:50;}
+  .lang-switch.open [data-lang-menu]{display:flex;}
+  .lang-switch [data-lang-pick]{background:none;border:0;color:var(--paper);font:inherit;cursor:pointer;text-align:left;padding:10px 16px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;display:flex;align-items:baseline;gap:10px;transition:background .15s,color .15s;}
+  .lang-switch [data-lang-pick] .lname{font-size:11px;letter-spacing:.04em;text-transform:none;color:var(--paper-mute);font-style:italic;font-family:var(--serif);}
+  .lang-switch [data-lang-pick]:hover{background:rgba(243,234,214,.06);color:var(--brass-2);}
+  .lang-switch [data-lang-pick][aria-current="true"]{color:var(--brass-2);}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap row">
+    <div class="left">
+      <h1>Ensembles &amp; <em>programmes</em>.</h1>
+    </div>
+    <ul>
+      <li><a href="#ensembles" data-i18n="sub.ensembles">Ensembles</a></li>
+      <li><a href="#programmes" data-i18n="sub.programmes">Programmes</a></li>
+      <li><a href="about.html" data-i18n="nav.about">About</a></li>
+      <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+      <li class="lang-switch"><button type="button" data-lang-toggle aria-label="Language"><span data-current-lang>EN</span></button></li>
+    </ul>
+  </div>
+</header>
+
+<div class="wrap">
+  <!-- ROW 1: ENSEMBLES -->
+  <div class="row-head first-row-head" id="ensembles">
+    <h2 data-i18n="ens.heading">Ensembles<em>.</em></h2>
+  </div>
+
+  <section class="ensembles-row">
+    <article class="ens-card" data-key="colibri" data-screen-label="Due Colibrí">
+      <span class="index" data-i18n="ens.colibri.idx">I — Duo</span>
+      <h3>Due <em>Colibrí</em></h3>
+      <span class="role-line" data-i18n="ens.colibri.role">Co-founder · Viola da gamba</span>
+      <p data-i18n="ens.colibri.desc">A duo of viole da gamba with Adele Serena (Vicenza · Brussels). Two players, two schools, one instrument family — French, English and Italian solo repertoire, plus arrangements for historical instruments.</p>
+      <div class="meta"><span data-i18n="ens.colibri.meta1">Two viole da gamba</span><span data-i18n="ens.colibri.meta2">with Adele Serena</span></div>
+    </article>
+
+    <article class="ens-card" data-key="auroras" data-screen-label="Auroras Mestizas">
+      <span class="index" data-i18n="ens.auroras.idx">II — 2025 · Brussels</span>
+      <h3>Auroras <em>Mestizas</em></h3>
+      <span class="role-line" data-i18n="ens.role.founder">Founder · Artistic director</span>
+      <p data-i18n="ens.auroras.desc">A young ensemble dedicated to the music of the 18th century, read with the American continent inside the frame rather than outside it. Latin-American archives meet late-baroque and galant repertoire from Europe.</p>
+      <div class="meta"><span data-i18n="ens.auroras.meta1">Voices · violins · violone · theorbo</span><span>IYAP 2025</span></div>
+    </article>
+
+    <article class="ens-card" data-key="transat" data-screen-label="Ensemble Transatlantique">
+      <span class="index" data-i18n="ens.transat.idx">III — 2022 · Lyon</span>
+      <h3>Ensemble <em>Transatlantique</em></h3>
+      <span class="role-line" data-i18n="ens.role.founder2">Founder · Artistic director</span>
+      <p data-i18n="ens.transat.desc">Founded inside the CNSMD of Lyon. A variable-formation ensemble bringing young European and Latin-American artists together around early-music repertoires, oral traditions, and ongoing research.</p>
+      <div class="meta"><span data-i18n="ens.transat.meta1">Variable, 4–10 artists</span><span>CCR Ambronay 2024</span></div>
+    </article>
+  </section>
+
+  <!-- ROW 2: PROGRAMMES -->
+  <div class="row-head" id="programmes">
+    <h2 data-i18n="prog.heading">Programmes<em>.</em></h2>
+    <p data-i18n="prog.note">Three programmes currently on tour — select one to see its repertoire.</p>
+  </div>
+
+  <div class="progs-tabs" role="tablist">
+  <button class="ptab" data-key="echoes" role="tab" aria-selected="true">
+    <span class="num">I — Due Colibrí</span>
+    <span class="ttl" data-i18n="ptab.echoes.ttl">Echoes of a lost dream</span>
+    <span class="who" data-i18n="ptab.echoes.who">A voyage across oneiric sentiments</span>
+  </button>
+  <button class="ptab" data-key="love" role="tab" aria-selected="false">
+    <span class="num">II — Auroras Mestizas</span>
+    <span class="ttl" data-i18n="ptab.love.ttl">Love against (divine) tempests</span>
+    <span class="who" data-i18n="ptab.love.who">Soprano · violins · violone · theorbo</span>
+  </button>
+  <button class="ptab" data-key="america" role="tab" aria-selected="false">
+    <span class="num">III — Ensemble Transatlantique</span>
+    <span class="ttl" data-i18n="ptab.america.ttl">América Popular</span>
+    <span class="who" data-i18n="ptab.america.who">At the origins of the tradition</span>
+  </button>
+  </div>
+</div>
+
+<div class="ppanels-stage">
+<!-- ECHOES OF A LOST DREAM -->
+<section class="ppanel is-active" data-key="echoes" role="tabpanel">
+  <div class="wrap"><div class="ppanel-grid">
+    <div class="ppanel-image">
+      <span class="badge">Due Colibrí</span>
+      <img src="assets/programme-echoes.jpg" alt="" />
+    </div>
+    <div class="ppanel-text">
+      <span class="who-line" data-i18n="pp.echoes.who">Due Colibrí · Two viole da gamba</span>
+      <h3><span data-i18n="pp.echoes.title">Echoes of a lost dream</span><span class="sub" data-i18n="pp.echoes.sub">a voyage across oneiric sentiments on the viol</span></h3>
+      <p class="epigraph" data-i18n="pp.echoes.epigraph">Forgetting oneself in the deepest dreams: from the intense lethargy that precedes the oneiric world, to the marvelous fantasies that blur into reality, only to be hidden forever in oblivion.</p>
+      <p class="mute" data-i18n="pp.echoes.body">The phases of human dreams are anything but monotonous stories — yet only rarely do their traces remain with us.</p>
+      <ul class="pieces">
+        <li><span class="piece">Adagio · Les Retours</span><span class="composer">J. Schenck (1660–1712)</span></li>
+        <li><span class="piece">Pavan</span><span class="composer">Sainte Colombe le père</span></li>
+        <li><span class="piece">Souldiers Resolution · Touch me Sweetly</span><span class="composer">Tobias Hume (1569–1645)</span></li>
+        <li><span class="piece">Prélude et Chaconne</span><span class="composer">Marin Marais (1656–1728)</span></li>
+        <li><span class="piece">Fantasia · Lubecker Sonata</span><span class="composer">Matthew Locke (1621–1677)</span></li>
+        <li><span class="piece">Les Batteries</span><span class="composer">Anonym</span></li>
+        <li><span class="piece">The Duke of Holstone's delight</span><span class="composer">Sainte Colombe le père</span></li>
+      </ul>
+      <div class="specs">
+        <span><b data-i18n="specs.disposition">Disposition</b> <span data-i18n="specs.echoes.disp">2 viole da gamba</span></span>
+        <span><b data-i18n="specs.duration">Duration</b> <span data-i18n="specs.echoes.dur">45–70 min</span></span>
+        <span class="budget"><b data-i18n="specs.budget">Budget</b> <span data-i18n="specs.echoes.budget">from 700 €</span></span>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- LOVE AGAINST (DIVINE) TEMPESTS -->
+<section class="ppanel" data-key="love" role="tabpanel">
+  <div class="wrap"><div class="ppanel-grid">
+    <div class="ppanel-image">
+      <span class="badge">Auroras Mestizas</span>
+      <img src="assets/programme-love.jpg" alt="" style="object-position:center 30%;" />
+    </div>
+    <div class="ppanel-text">
+      <span class="who-line" data-i18n="pp.love.who">Auroras Mestizas · Soprano &amp; chamber forces</span>
+      <h3><span data-i18n="pp.love.title">Love against (divine) tempests</span><span class="sub" data-i18n="pp.love.sub">an audacious reading of the early eighteenth century</span></h3>
+      <p class="epigraph" data-i18n="pp.love.epigraph">…But no Man moved Me — till the Tide<br />Went past my simple Shoe —<br />And past my Apron — and my Belt<br />And past my Boddice — too —</p>
+      <p data-i18n="pp.love.body">Auroras Mestizas doesn't limit itself by isolating or juxtaposing musical worlds — instead, it looks for the common spaces they share. Figures like José de Orejón y Aparicio and Manuel de Zumaya dialogue naturally with Scarlatti, Porpora and Nebra, offering an audacious and innovative reading of early music.</p>
+      <ul class="pieces">
+        <li><span class="piece">Su la sponda del mare (L'Olimpia) · Sinfonia · Aiutatemi a morire</span><span class="composer">A. Scarlatti (1660–1725)</span></li>
+        <li><span class="piece">Sinfonia Op. 2 — Affettuoso</span><span class="composer">N. Porpora (1686–1768)</span></li>
+        <li><span class="piece">Ya que el sol misterioso</span><span class="composer">J. de Orejón y Aparicio (1706–1765)</span></li>
+        <li><span class="piece">Tempestad Grande Amigo</span><span class="composer">J. de Nebra (1702–1768)</span></li>
+      </ul>
+      <div class="specs">
+        <span><b data-i18n="specs.disposition">Disposition</b> <span data-i18n="specs.love.disp">Soprano · 2 violins · violone · theorbo</span></span>
+        <span><b data-i18n="specs.duration">Duration</b> <span data-i18n="specs.love.dur">45–75 min</span></span>
+        <span class="budget"><b data-i18n="specs.budget">Budget</b> <span data-i18n="specs.love.budget">from 1 750 €</span></span>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- AMÉRICA POPULAR -->
+<section class="ppanel" data-key="america" role="tabpanel">
+  <div class="wrap"><div class="ppanel-grid">
+    <div class="ppanel-image">
+      <span class="badge">Ensemble Transatlantique</span>
+      <img src="assets/programme-america.jpg" alt="" />
+    </div>
+    <div class="ppanel-text">
+      <span class="who-line" data-i18n="pp.america.who">Ensemble Transatlantique · 4 artists</span>
+      <h3><span data-i18n="pp.america.title">América Popular</span><span class="sub" data-i18n="pp.america.sub">at the origins of the tradition</span></h3>
+      <p class="epigraph" data-i18n="pp.america.epigraph">Far from the courts, beyond the cathedral walls — the music of inhabitants whose origins are diverse, but who would live and shape their lives in the new world.</p>
+      <p data-i18n="pp.america.body">América Popular shows the origins of the diversity and the colours of Latin-American popular music — heir to Western early music, to African rhythms, and to the native musics of the continent. A repertoire with an identity proper and proud, of the American peoples.</p>
+      <div class="specs">
+        <span><b data-i18n="specs.disposition">Disposition</b> <span data-i18n="specs.america.disp">Voices · traditional American instruments · continuo</span></span>
+        <span><b data-i18n="specs.duration">Duration</b> <span data-i18n="specs.america.dur">60 min</span></span>
+        <span class="budget"><b data-i18n="specs.budget">Budget</b> <span data-i18n="specs.america.budget">from 1 500 €</span></span>
+        <span><b data-i18n="specs.adaptable">Adaptable</b> <span data-i18n="specs.america.adapt">School interventions</span></span>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+</div><!-- /.ppanels-stage -->
+
+<div class="wrap">
+  <div class="pager">
+    <a href="index.html">
+      <svg viewBox="0 0 36 12" fill="none" stroke="currentColor" stroke-width="1.4">
+        <line x1="36" y1="6" x2="2" y2="6"/>
+        <polyline points="8,1 2,6 8,11"/>
+      </svg>
+      Back to portrait
+    </a>
+    <a href="index.html#agenda">
+      Agenda
+      <svg viewBox="0 0 36 12" fill="none" stroke="currentColor" stroke-width="1.4">
+        <line x1="0" y1="6" x2="34" y2="6"/>
+        <polyline points="28,1 34,6 28,11"/>
+      </svg>
+    </a>
+  </div>
+</div>
+
+<style>
+  /* close the outer .wrap that holds row-heads + tabs, programme panels are full markup wrap'd individually */
+</style>
+
+<script>
+  const ptabs = document.querySelectorAll('.ptab');
+  const ppanels = document.querySelectorAll('.ppanel');
+  const order = ['echoes','love','america'];
+  let idx = 0;
+  let timer = null;
+
+  function show(key){
+    ptabs.forEach(x => x.setAttribute('aria-selected', x.dataset.key === key ? 'true' : 'false'));
+    ppanels.forEach(p => p.classList.toggle('is-active', p.dataset.key === key));
+    idx = order.indexOf(key);
+  }
+  function startAuto(){
+    stopAuto();
+    timer = setInterval(() => {
+      idx = (idx + 1) % order.length;
+      show(order[idx]);
+    }, 7000);
+  }
+  function stopAuto(){
+    if(timer){ clearInterval(timer); timer = null; }
+  }
+
+  ptabs.forEach(t => t.addEventListener('click', () => {
+    show(t.dataset.key);
+    stopAuto();          // user took control — don't override
+    startAuto();         // restart the 7s clock from this slide
+  }));
+
+  // pause when tab is hidden
+  document.addEventListener('visibilitychange', () => {
+    if(document.hidden) stopAuto(); else startAuto();
+  });
+
+  startAuto();
+</script>
+
+<script src="i18n.js"></script>
+</body>
+</html>
